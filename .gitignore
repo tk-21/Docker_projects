@@ -1,0 +1,27 @@
+# 共通の無視ファイル
+*.log
+.env
+tmp/
+build/
+dist/
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# プロジェクトごとの無視ファイル
+project1/logs/
+project1/node_modules/
+project1/.cache/
+project1/coverage/
+
+project2/logs/
+project2/node_modules/
+project2/.cache/
+project2/coverage/
+
+project3/logs/
+project3/node_modules/
+project3/.cache/
+project3/coverage/
+
