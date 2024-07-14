@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:5.7
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -30,6 +28,25 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+    networks:
+      - monitoring
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter:v0.12.1
+    container_name: mysqld-exporter
+    environment:
+      DATA_SOURCE_NAME: "root:rootpassword@(mysql:3306)/"
+    ports:
+      - "9104:9104"
+    volumes:
+      - ./my.cnf:/root/.my.cnf
+    networks:
+      - monitoring
+
+  sysbench:
+    image: severalnines/sysbench
+    container_name: sysbench
+    entrypoint: ["tail", "-f", "/dev/null"]
     networks:
       - monitoring
 
