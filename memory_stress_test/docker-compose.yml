@@ -1,0 +1,30 @@
+services:
+  stress:
+    image: progrium/stress
+    container_name: stress_test
+    command: ["--vm", "1", "--vm-bytes", "128M", "--vm-keep", "--timeout", "300s"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  htop:
+    image: htop
+    container_name: htop
+    tty: true
+    stdin_open: true
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+  ubuntu:
+    image: ubuntu:latest
+    container_name: ubuntu
+    tty: true
+    stdin_open: true
+    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y procps && while true; do sleep 1000; done"]
+    deploy:
+      resources:
+        limits:
+          memory: 128M
