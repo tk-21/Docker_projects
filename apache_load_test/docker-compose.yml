@@ -1,0 +1,13 @@
+services:
+  apache:
+    build: ./apache
+    ports:
+      - "8080:80"
+    # volumes:
+    #   - ./my-httpd.conf:/usr/local/apache2/conf/httpd.conf
+    #   - ./public-html/:/usr/local/apache2/htdocs/
+  jmeter:
+    build: ./jmeter
+    volumes:
+      - ./results:/tests/results
+    entrypoint: ["/opt/jmeter/bin/jmeter", "-n", "-t", "/tests/jmeter-test-plan.jmx", "-l", "/tests/results/result.jtl"]
