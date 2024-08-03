@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  stress:
+    image: alpine:latest
+    container_name: stress_test
+    command: ["sh", "-c", "apk add --no-cache stress-ng && stress-ng --vm 1 --vm-bytes 128M --vm-keep --timeout 300s"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  busybox:
+    image: busybox:latest
+    container_name: busybox
+    tty: true
+    stdin_open: true
+    command: ["sh", "-c", "while true; do top; sleep 1; done"]
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+  ubuntu:
+    image: ubuntu:latest
+    container_name: ubuntu
+    tty: true
+    stdin_open: true
+    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y procps && while true; do sleep 1000; done"]
+    deploy:
+      resources:
+        limits:
+          memory: 128M
