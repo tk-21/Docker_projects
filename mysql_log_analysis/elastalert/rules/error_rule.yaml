@@ -1,0 +1,14 @@
+name: MySQL Error Alert
+type: frequency
+index: mysql-logs-*
+num_events: 1
+timeframe:
+  minutes: 10
+filter:
+- query:
+    query_string:
+      query: "loglevel:ERROR"
+alert:
+- "email"
+email:
+- "admin@example.com"

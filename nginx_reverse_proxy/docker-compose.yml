@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  apache:
+    image: httpd:latest
+    container_name: apache_server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./apache/conf:/usr/local/apache2/conf
+      - ./apache/logs:/usr/local/apache2/logs
+      - ./apache/www:/usr/local/apache2/htdocs
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_server
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/www:/usr/share/nginx/html
+
+  backend:
+    image: node:14
+    container_name: backend_server
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    command: sh -c "npm install && npm start"
+    ports:
+      - "3000:3000"

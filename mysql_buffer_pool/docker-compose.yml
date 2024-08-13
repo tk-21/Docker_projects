@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_server
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/my.cnf
+
+  sysbench:
+    image: severalnines/sysbench
+    container_name: sysbench_client
+    depends_on:
+      - mysql
+    entrypoint: >
+      sh -c "
+      sleep 20 &&
+      sysbench --db-driver=mysql --mysql-host=mysql --mysql-user=testuser --mysql-password=testpassword --mysql-db=testdb --table-size=100000 --tables=10 --threads=10 --time=60 --report-interval=10 oltp_read_write prepare &&
+      sysbench --db-driver=mysql --mysql-host=mysql --mysql-user=testuser --mysql-password=testpassword --mysql-db=testdb --table-size=100000 --tables=10 --threads=10 --time=60 --report-interval=10 oltp_read_write run &&
+      sysbench --db-driver=mysql --mysql-host=mysql --mysql-user=testuser --mysql-password=testpassword --mysql-db=testdb --table-size=100000 --tables=10 --threads=10 --time=60 --report-interval=10 oltp_read_write cleanup
+      "
+
+volumes:
+  mysql_data:
