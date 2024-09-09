@@ -1,0 +1,5 @@
+services:
+  httpd:
+    image: httpd:latest
+    volumes:
+      - ./logs:/var/log/httpd
