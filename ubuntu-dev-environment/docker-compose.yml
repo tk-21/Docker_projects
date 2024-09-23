@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  ubuntu-dev:
+    build: .
+    container_name: ubuntu_dev_env
+    tty: true  # コンテナを常に実行状態に保ち、インタラクティブな使用を可能にします
+    volumes:
+      - .:/workspace  # ホストの現在のディレクトリをコンテナ内の /workspace にマウントします
+      - ./config/aliases.sh:/root/aliases.sh  # エイリアスファイルをマウント
+    ports:
+      - "8080:80"      # ホストのポート8080をコンテナのポート80（Apache）にマッピング
+      - "3306:3306"    # ホストのポート3306をコンテナのポート3306（MySQL）にマッピング
+    networks:
+      - dev-network
+    command: /usr/bin/supervisord  # supervisord を起動
+
+networks:
+  dev-network:
+    driver: bridge
