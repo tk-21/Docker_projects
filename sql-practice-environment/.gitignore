@@ -1,0 +1,10 @@
+# MySQL data
+data/mysql/
+
+# Docker related
+*.log
+*.tmp
+
+# IDE settings
+.vscode/
+.idea/
